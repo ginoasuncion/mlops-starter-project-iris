@@ -1,7 +1,9 @@
 # Data files
 data/*
+!data/*.dvc
 !data/.gitignore
 models/*
+!models/*.dvc
 !models/.gitignore
 
 ## Mac OS

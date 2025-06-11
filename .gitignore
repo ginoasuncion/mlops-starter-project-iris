@@ -1,8 +1,12 @@
 # Data files
 data/*
+!data/*.dvc
 !data/.gitignore
 models/*
+!models/*.dvc
 !models/.gitignore
+mlflow_run.txt
+mlruns/
 
 ## Mac OS
 .DS_Store

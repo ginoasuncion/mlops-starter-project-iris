@@ -59,6 +59,9 @@ jobs:
     - name: Download & preprocess the data
       run: python src/load_data.py
 
+    - name: Split the dataset
+      run: python src/split_dataset.py --test_size 0.2
+
     - name: Run the training script
       run: python src/train.py
 

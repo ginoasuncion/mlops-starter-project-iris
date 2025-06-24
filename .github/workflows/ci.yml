@@ -32,3 +32,88 @@ jobs:
 
     - name: Run tests with coverage
       run: make test-cov
+
+  train-model:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+
+    - name: Set up Python
+      run: uv python install 3.11
+
+    - name: Install dependencies
+      run: make install
+
+    - name: Ensure all dependencies are installed
+      run: pip install .
+
+    - name: List installed packages
+      run: pip list
+
+    - name: Download & preprocess the data
+      run: python src/load_data.py
+
+    - name: Split the dataset
+      run: python src/split_dataset.py --test_size 0.2
+
+    - name: Run the training script
+      run: python src/train.py
+
+    - name: Upload model artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: iris-model
+        path: models/model.joblib
+
+  evaluate-model:
+    runs-on: ubuntu-latest
+    needs: train-model
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+
+    - name: Set up Python
+      run: uv python install 3.11
+
+    - name: Install dependencies
+      run: make install
+
+    - name: Ensure all dependencies are installed
+      run: pip install .
+
+    - name: List installed packages
+      run: pip list
+
+    - name: Download iris-model artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: iris-model
+        path: models/
+
+    - name: Download & preprocess the data
+      run: python src/load_data.py
+
+    - name: Split the dataset
+      run: python src/split_dataset.py --test_size 0.2
+
+    - name: Verify model file exists
+      run: ls -la models/model.joblib
+
+    - name: Run evaluation script
+      run: python src/evaluate.py
+
+    - name: Upload evaluation metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: evaluation-metrics
+        path: data/eval.json

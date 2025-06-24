@@ -93,3 +93,7 @@ ignore_missing_imports = true
 testpaths = ["tests"]          # # Directory where your tests are located
 pythonpath = ["."]             # This adds the project root to Python path
 addopts = "--cov=src --cov-report=term-missing --cov-report=html"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

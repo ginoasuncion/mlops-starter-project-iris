@@ -53,6 +53,9 @@ jobs:
     - name: Ensure all dependencies are installed
       run: uv pip install .
 
+    - name: List installed packages
+      run: uv pip list
+
     - name: Download & preprocess the data
       run: python src/load_data.py
 
@@ -84,6 +87,9 @@ jobs:
 
     - name: Ensure all dependencies are installed
       run: uv pip install .
+
+    - name: List installed packages
+      run: uv pip list
 
     - name: Download iris-model artifact
       uses: actions/download-artifact@v4
